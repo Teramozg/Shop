@@ -17,4 +17,9 @@ public interface CarRepository {
     public void addCarToBase();
 
     List<Car> ownersListCar(int idSearch);
+
+    void ownerUpdate(int carId, int ownerId);
+
+    void addOwner(String firstName,String lastName);
+
 }

@@ -20,6 +20,8 @@ public class Menu {
             System.out.println("Вводите 5 если нужно найти авто по Year ");
             System.out.println("Введите 6, если хотите добавить авто в базу данных.");
             System.out.println("Введите 7, если нужно получить инфо об авто по ИД владельца.");
+            System.out.println("Введите 8, если нужно изменить инфо об авто.");
+
 
             Scanner scan = new Scanner(System.in);
             int action = 0;
@@ -82,6 +84,34 @@ public class Menu {
                     System.out.println(car);
 
                 }
+            } else if (action == 8) {
+                System.out.println("Введите ID авто.");
+                Scanner scanner = new Scanner(System.in);
+                int id = scanner.nextInt();
+                System.out.println("Если нужно создать владдельца, введите yes, если использовать существующего в базе введите no.");
+                while (true) {
+                    String string = scanner.next();
+                    if (string.equals("yes")) {   //todo доделать. + многопоточность+ вопросы по списку.
+                        System.out.println("Введите имя владельца.");
+                        String firstName = scanner.next();
+                        System.out.println("Введите фамилию владельца.");
+                        String lastName=scanner.next();
+                        carService.addOwner(firstName,lastName);
+                        System.out.println("Введите ИД владельца");
+                        int ownerId = scan.nextInt();
+                        carService.ownerUpdate(id,ownerId);
+                        break;
+                    } else if (string.equals("no")) {
+                        System.out.println("Введите ИД владельца");
+                        int ownerId = scan.nextInt();
+                        carService.ownerUpdate(id,ownerId);
+                        break;
+                    } else {
+                        System.out.println("Введите yes или no");
+
+                    }
+                }
+
             }
         }
     }

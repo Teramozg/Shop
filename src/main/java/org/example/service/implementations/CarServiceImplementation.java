@@ -50,4 +50,12 @@ public class CarServiceImplementation implements CarService {
     public List<Car> ownersListCar(int idSearch) {
         return carRepository.ownersListCar(idSearch);
     }
+
+    @Override
+    public void ownerUpdate(int carId, int ownerId) {
+        carRepository.ownerUpdate(carId,ownerId);
+    }
+    public void addOwner(String firstName,String lastName){
+        carRepository.addOwner(firstName,lastName);
+    }
 }

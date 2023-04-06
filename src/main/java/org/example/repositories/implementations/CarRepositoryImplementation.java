@@ -208,5 +208,37 @@ public class CarRepositoryImplementation implements CarRepository {
             throw new RuntimeException(e);
         }
         return listCar;
-    }  //todo реализовать prepareStatement-update-метод;  получить по идВладельца список всех его авто; (join);
+    }
+
+    @Override
+    public void ownerUpdate(int carId, int ownerId) {
+        try {
+            Connection connection = DriverManager.getConnection(URL, user, password);
+            Statement statement = connection.createStatement();
+            String s = "UPDATE public.cars SET  owner_id="+ownerId+" WHERE id="+carId;
+
+           statement.executeUpdate(s);
+
+//
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+public void addOwner(String firstName,String lastName){
+    try {
+        Connection connection = DriverManager.getConnection(URL, user, password);
+        Statement statement = connection.createStatement();
+        String s = "INSERT INTO public.owners(first_name, last_name) VALUES ('"+firstName+"','"+lastName+"');";
+
+        statement.executeUpdate(s);
+
+//
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+
+
+
 }
