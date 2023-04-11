@@ -21,6 +21,8 @@ public class Menu {
             System.out.println("Введите 6, если хотите добавить авто в базу данных.");
             System.out.println("Введите 7, если нужно получить инфо об авто по ИД владельца.");
             System.out.println("Введите 8, если нужно изменить инфо об авто.");
+            System.out.println("Введите 9, чтобы создать рейс.");
+            System.out.println("Введите 10, чтобы вывести информацию о рейсах по ИД водителя.");
 
 
             Scanner scan = new Scanner(System.in);
@@ -91,20 +93,20 @@ public class Menu {
                 System.out.println("Если нужно создать владдельца, введите yes, если использовать существующего в базе введите no.");
                 while (true) {
                     String string = scanner.next();
-                    if (string.equals("yes")) {   //todo доделать. + многопоточность+ вопросы по списку.
+                    if (string.equals("yes")) {   //todo  многопоточность+ вопросы по списку.
                         System.out.println("Введите имя владельца.");
                         String firstName = scanner.next();
                         System.out.println("Введите фамилию владельца.");
-                        String lastName=scanner.next();
-                        carService.addOwner(firstName,lastName);
+                        String lastName = scanner.next();
+                        carService.addOwner(firstName, lastName);
                         System.out.println("Введите ИД владельца");
                         int ownerId = scan.nextInt();
-                        carService.ownerUpdate(id,ownerId);
+                        carService.ownerUpdate(id, ownerId);
                         break;
                     } else if (string.equals("no")) {
                         System.out.println("Введите ИД владельца");
                         int ownerId = scan.nextInt();
-                        carService.ownerUpdate(id,ownerId);
+                        carService.ownerUpdate(id, ownerId);
                         break;
                     } else {
                         System.out.println("Введите yes или no");
@@ -112,7 +114,25 @@ public class Menu {
                     }
                 }
 
+            } else if (action == 9) {
+                System.out.println("Введите дату поездки: число ");
+                Scanner scanner = new Scanner(System.in);
+                int date = scanner.nextInt();
+                System.out.println("Введите месяц.");
+                int month = scanner.nextInt();
+                System.out.println("Введите год.");
+                int year = scanner.nextInt();
+                System.out.println("Опишите рейс(отправление-прибытие, километраж, время)");
+                String description = scanner.next();
+                carService.sendToRace(date, month, year, description);
+
+
+            } else if (action == 10) {
+
+
             }
+
+
         }
     }
 }

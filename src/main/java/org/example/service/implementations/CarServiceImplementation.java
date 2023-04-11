@@ -58,4 +58,9 @@ public class CarServiceImplementation implements CarService {
     public void addOwner(String firstName,String lastName){
         carRepository.addOwner(firstName,lastName);
     }
+
+    @Override
+    public void sendToRace(int date, int month, int year, String description) {
+        carRepository.sendToRace(date,month,year,description);
+    }
 }

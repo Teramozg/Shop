@@ -21,5 +21,6 @@ public interface CarRepository {
     void ownerUpdate(int carId, int ownerId);
 
     void addOwner(String firstName,String lastName);
+    public void sendToRace(int date, int month, int year, String description );
 
 }

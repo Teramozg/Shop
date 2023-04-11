@@ -239,6 +239,26 @@ public void addOwner(String firstName,String lastName){
     }
 }
 
+    public void sendToRace(int date, int month, int year,  String description ){
+    try {
+        Connection connection = DriverManager.getConnection(URL, user, password);
+        Statement statement = connection.createStatement();
+        String s = "INSERT INTO public.race_list(date, description ) VALUES ('"+date+"-"+month+"-"+year+"','"+description+"');";
+        statement.executeUpdate(s);
+
+
+
+//
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+
+}
+
+//todo нарисовать структуру базы данных(прототип базы данных)
+    // todo сервис отправки водителя в рейс.
+    //todo поковырять html-code.
+
 
 
 }
