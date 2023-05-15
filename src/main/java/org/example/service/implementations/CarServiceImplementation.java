@@ -1,10 +1,12 @@
 package org.example.service.implementations;
 
 import org.example.models.Car;
+import org.example.models.RaceList;
 import org.example.repositories.CarRepository;
 import org.example.repositories.implementations.CarRepositoryImplementation;
 import org.example.service.CarService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class CarServiceImplementation implements CarService {
@@ -60,7 +62,19 @@ public class CarServiceImplementation implements CarService {
     }
 
     @Override
-    public void sendToRace(int date, int month, int year, String description) {
-        carRepository.sendToRace(date,month,year,description);
+    public void sendToRace(LocalDate date, String description, int carsAndDriversId) {
+        carRepository.sendToRace(date, description, carsAndDriversId);
+    }
+
+    @Override
+    public int addCarsDrivers(int carId, int driversId) {
+        return carRepository.addCarsDrivers(carId,driversId);
+
+
+    }
+
+    @Override
+    public List<RaceList> raceList(int searchId) {
+        return carRepository.raceList(searchId);
     }
 }

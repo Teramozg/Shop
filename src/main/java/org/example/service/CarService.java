@@ -1,7 +1,9 @@
 package org.example.service;
 
 import org.example.models.Car;
+import org.example.models.RaceList;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface CarService {
@@ -23,5 +25,8 @@ public interface CarService {
 
     void addOwner(String firstName,String lastName);
 
-    public void sendToRace(int date, int month, int year, String description );
+    public void sendToRace(LocalDate date, String description,int carsAndDriversId );
+
+    public int addCarsDrivers(int carId, int driversId);
+    public List<RaceList> raceList(int searchId);
 }

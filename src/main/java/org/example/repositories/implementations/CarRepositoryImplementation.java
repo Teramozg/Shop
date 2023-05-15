@@ -1,9 +1,11 @@
 package org.example.repositories.implementations;
 
 import org.example.models.Car;
+import org.example.models.RaceList;
 import org.example.repositories.CarRepository;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -197,7 +199,7 @@ public class CarRepositoryImplementation implements CarRepository {
                 int year = resultSet.getInt("year");
                 int weight = resultSet.getInt("weight");
                 int owner_id = resultSet.getInt("owner_id");
-                if (idSearch==owner_id) {
+                if (idSearch == owner_id) {
                     Car car = new Car(id, brand, model, power, vin, year, weight);
                     listCar.add(car);
                 } else {
@@ -215,9 +217,9 @@ public class CarRepositoryImplementation implements CarRepository {
         try {
             Connection connection = DriverManager.getConnection(URL, user, password);
             Statement statement = connection.createStatement();
-            String s = "UPDATE public.cars SET  owner_id="+ownerId+" WHERE id="+carId;
+            String s = "UPDATE public.cars SET  owner_id=" + ownerId + " WHERE id=" + carId;
 
-           statement.executeUpdate(s);
+            statement.executeUpdate(s);
 
 //
         } catch (SQLException e) {
@@ -225,40 +227,89 @@ public class CarRepositoryImplementation implements CarRepository {
         }
     }
 
-public void addOwner(String firstName,String lastName){
-    try {
-        Connection connection = DriverManager.getConnection(URL, user, password);
-        Statement statement = connection.createStatement();
-        String s = "INSERT INTO public.owners(first_name, last_name) VALUES ('"+firstName+"','"+lastName+"');";
+    public void addOwner(String firstName, String lastName) {
+        try {
+            Connection connection = DriverManager.getConnection(URL, user, password);
+            Statement statement = connection.createStatement();
+            String s = "INSERT INTO public.owners(first_name, last_name) VALUES ('" + firstName + "','" + lastName + "');";
 
-        statement.executeUpdate(s);
-
-//
-    } catch (SQLException e) {
-        throw new RuntimeException(e);
-    }
-}
-
-    public void sendToRace(int date, int month, int year,  String description ){
-    try {
-        Connection connection = DriverManager.getConnection(URL, user, password);
-        Statement statement = connection.createStatement();
-        String s = "INSERT INTO public.race_list(date, description ) VALUES ('"+date+"-"+month+"-"+year+"','"+description+"');";
-        statement.executeUpdate(s);
-
-
+            statement.executeUpdate(s);
 
 //
-    } catch (SQLException e) {
-        throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-}
+    public void sendToRace(LocalDate date, String description,int carsAndDriversId ) {
+        try {
+            Connection connection = DriverManager.getConnection(URL, user, password);
+            Statement statement = connection.createStatement();
+            String s = "INSERT INTO public.race_list(date, description, cars_and_drivers_id ) VALUES ('" + date +"','" + description + "'," +carsAndDriversId+" );";
+            System.out.println(s);
+            statement.executeUpdate(s);
 
-//todo нарисовать структуру базы данных(прототип базы данных)
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public int addCarsDrivers(int carId, int driversId) {
+        int id=0;
+        try {
+            Connection connection = DriverManager.getConnection(URL, user, password);
+            Statement statement = connection.createStatement();
+            String s = "INSERT INTO public.cars_drivers(car_Id, driver_Id ) VALUES (" + carId + "," + driversId + ");";
+            statement.executeUpdate(s);
+            Statement statement1 = connection.createStatement();
+            String string="SELECT public.cars_drivers.id FROM public.cars_drivers WHERE car_id ='" + carId + "' and driver_id='"+driversId+"';";
+            ResultSet resultSet = statement1.executeQuery(string);
+
+            while(resultSet.next())   {
+            id = resultSet.getInt("id");
+            }
+//            Statement statement2 = connection.createStatement();
+//            String s1 = "INSERT INTO public.race_list(cars_and_drivers_id) VALUES ("+id+");";
+//            statement2.executeUpdate(s1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return id;
+    }
+
+    public List<RaceList> raceList(int searchId) {
+        List<RaceList> listRace = new ArrayList<>();
+        try {
+            Connection connection = DriverManager.getConnection(URL, user, password);
+            Statement statement = connection.createStatement();
+            String s = "SELECT public.race_list.id, public.race_list.date, public.race_list.description, " +
+                    "public.cars_drivers.car_id, public.cars_drivers.driver_id " +
+                    "FROM public.race_list JOIN public.cars_drivers ON public.race_list.cars_and_drivers_id=public.cars_drivers.id;";
+            ResultSet resultSet = statement.executeQuery(s);
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                LocalDate date = LocalDate.parse(resultSet.getString("date"));
+                String description = resultSet.getString("description");
+                int carId = resultSet.getInt("car_id");
+                int driverId = resultSet.getInt("driver_id");
+
+                if (driverId == searchId) {
+
+                    RaceList race = new RaceList(id, carId, driverId, date, description);
+                    listRace.add(race);
+                }
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listRace;
+    }
+
+    //todo нарисовать структуру базы данных(прототип базы данных)
     // todo сервис отправки водителя в рейс.
     //todo поковырять html-code.
-
 
 
 }

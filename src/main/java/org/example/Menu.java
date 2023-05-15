@@ -1,9 +1,12 @@
 package org.example;
 
 import org.example.models.Car;
+import org.example.models.RaceList;
 import org.example.service.CarService;
 import org.example.service.implementations.CarServiceImplementation;
 
+import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -93,7 +96,7 @@ public class Menu {
                 System.out.println("Если нужно создать владдельца, введите yes, если использовать существующего в базе введите no.");
                 while (true) {
                     String string = scanner.next();
-                    if (string.equals("yes")) {   //todo  многопоточность+ вопросы по списку.
+                    if (string.equals("yes")) {
                         System.out.println("Введите имя владельца.");
                         String firstName = scanner.next();
                         System.out.println("Введите фамилию владельца.");
@@ -115,19 +118,37 @@ public class Menu {
                 }
 
             } else if (action == 9) {
+                System.out.println("Введите Ид автомобиля для поездки.");
+                Scanner scanner = new Scanner(new InputStreamReader(System.in));
+                int carId=scanner.nextInt();
+                System.out.println("Введите Ид водителя.");
+                int driversId= scan.nextInt();
+
+
                 System.out.println("Введите дату поездки: число ");
-                Scanner scanner = new Scanner(System.in);
-                int date = scanner.nextInt();
-                System.out.println("Введите месяц.");
+                int dat = scanner.nextInt();
+                System.out.println("Введите дату поездки: месяц.");
                 int month = scanner.nextInt();
-                System.out.println("Введите год.");
+                System.out.println("Введите дату поездки: год.");
                 int year = scanner.nextInt();
                 System.out.println("Опишите рейс(отправление-прибытие, километраж, время)");
-                String description = scanner.next();
-                carService.sendToRace(date, month, year, description);
+                String description1 = scanner.nextLine();
+                String description = scanner.nextLine();
+//                System.out.println(description);
+                int carsAndDriversId = carService.addCarsDrivers(carId, driversId);
+                LocalDate date=LocalDate.of(year,month,dat);
+                carService.sendToRace(date, description,carsAndDriversId);
+
 
 
             } else if (action == 10) {
+                System.out.println("Введите номер ИД водителя.");
+                Scanner scanner = new Scanner(System.in);
+                int searchId = scanner.nextInt();
+                for (RaceList raceList :carService.raceList(searchId)) {
+                    System.out.println(raceList);
+
+                }
 
 
             }

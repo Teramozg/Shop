@@ -4,6 +4,7 @@ import javafx.scene.effect.SepiaTone;
 import org.example.models.Car;
 import org.example.service.CarService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,11 @@ public class Training {
                 .collect(Collectors.toSet());                   // todo HTTP протокол. get(select), post(create), put(insert),delete,
         collect1.forEach(el-> System.out.println(el));          // todo oсновы Spring, коллекции, мап.сет., стримы.
                                                                 // todo реализовать вставку в середину linkedList;
+
+
+    }
+
+    public void creation() throws IOException {
 
 
     }
